@@ -1,0 +1,300 @@
+{
+  "info": {
+    "_postman_id": "f395dbb8-9c91-4d31-81cf-a6f5d1a60ef5",
+    "name": "Laboratorio 7 - Profesores, Proveedores y Empleados",
+    "description": "Colección para probar los tres ejercicios. Ejecute primero la petición Crear de cada carpeta para guardar automáticamente el ID generado.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "apiKey",
+      "value": "laboratorio7-key"
+    },
+    {
+      "key": "profesorId",
+      "value": "1"
+    },
+    {
+      "key": "proveedorId",
+      "value": "1"
+    },
+    {
+      "key": "empleadoId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Ejercicio 1 - Profesores",
+      "item": [
+        {
+          "name": "Crear profesor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Profesor creado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "const profesor = pm.response.json();",
+                  "pm.collectionVariables.set('profesorId', profesor.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"García\",\n  \"correo\": \"ana@universidad.com\",\n  \"especialidad\": \"Matemática\",\n  \"estado\": \"ACTIVO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/profesores"
+          }
+        },
+        {
+          "name": "Consultar profesores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/profesores"
+          }
+        },
+        {
+          "name": "Filtrar profesores por especialidad",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/profesores?especialidad=Matem%C3%A1tica"
+          }
+        },
+        {
+          "name": "Consultar profesor por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/profesores/{{profesorId}}"
+          }
+        },
+        {
+          "name": "Consultar profesor inexistente - 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Profesor inexistente: 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/profesores/99999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ejercicio 2 - Proveedores",
+      "item": [
+        {
+          "name": "Crear proveedor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Proveedor creado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "const proveedor = pm.response.json();",
+                  "pm.collectionVariables.set('proveedorId', proveedor.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos\",\n  \"apellido\": \"López\",\n  \"correo\": \"carlos@proveedor.com\",\n  \"categoria\": \"Tecnología\",\n  \"estado\": \"ACTIVO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/proveedores"
+          }
+        },
+        {
+          "name": "Consultar proveedores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/proveedores"
+          }
+        },
+        {
+          "name": "Filtrar proveedores por categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/proveedores?categoria=Tecnolog%C3%ADa"
+          }
+        },
+        {
+          "name": "Consultar proveedor por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/proveedores/{{proveedorId}}"
+          }
+        },
+        {
+          "name": "Consultar proveedor inexistente - 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Proveedor inexistente: 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/proveedores/99999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ejercicio 3 - Empleados",
+      "item": [
+        {
+          "name": "Crear empleado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Empleado creado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "const empleado = pm.response.json();",
+                  "pm.collectionVariables.set('empleadoId', empleado.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"maria@empresa.com\",\n  \"especialidad\": \"Desarrollo Backend\",\n  \"estado\": \"ACTIVO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/empleados"
+          }
+        },
+        {
+          "name": "Consultar empleados",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/empleados"
+          }
+        },
+        {
+          "name": "Filtrar empleados por especialidad",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/empleados?especialidad=Desarrollo%20Backend"
+          }
+        },
+        {
+          "name": "Consultar empleado por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/empleados/{{empleadoId}}"
+          }
+        },
+        {
+          "name": "Consultar empleado inexistente - 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Empleado inexistente: 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/empleados/99999"
+          }
+        }
+      ]
+    }
+  ]
+}
